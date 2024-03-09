@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="contailer row">
+        <h1>{{ post.title }}</h1>
+        <div class="container-fluid mt-3">
+            <p>
+                Автор: {{ post.author }},
+                Дата публикации: {{ post.date.strftime('%d.%m.%Y') }}
+            </p>
+        </div>
+        <div class="container-fluid col-md-8 text-center my-3">
+            <img class="img-fluid" src="{{ url_for('static', filename='images/' ~ post.image_filename) }}" alt="Card image cap">
+        </div>
+        <div class="col-md-12 text-justify d-flex align-items-center">
+            <p>{{ post.text }}</p>
+        </div>
+        <div class="comment-form border">
+            <div class="my-3">
+                <label for="FormControlTextarea1" class="form-label">Оставьте комментарий</label>
+                <textarea class="form-control" id="FormControlTextarea1" rows="3"></textarea>
+            </div>
+            <div class="col-12 mb-3"> 
+                <button class="btn btn-primary" type="submit">Отправить</button>
+            </div>
+        </div>
+        <div class="container-fluid my-5">       
+            {% for comment in post.comments %}
+                <div class="d-flex">
+                    <div class="flex-shrink-0">
+                        <img src="{{ url_for('static', filename='images/icon2.png') }}" class="rounded-circle" alt="Sample Image">
+                    </div>
+                    <div class="flex-grow-1 ms-3">
+                        <h5> {{ comment.author }} </h5>
+                        <p> {{ comment.text }}</p>                        
+                        {% if comment.replies %}
+                            {% for reply in comment.replies %}
+                                <div class="d-flex mt-3">
+                                    <div class="flex-shrink-0">
+                                        <img src="{{ url_for('static', filename='images/icon2.png') }}" class="rounded-circle" alt="Sample Image">
+                                    </div>
+                                    <div class="flex-grow-1 ms-3">
+                                        <h5> {{ reply.author }} </h5>
+                                        <p> {{ reply.text }}</p> 
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+{% endblock %}
