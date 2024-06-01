@@ -269,7 +269,7 @@ def password_change():
 
         if user_password is not None:
             errors['password'] = check_password(new_password)
-            if errors['password'] == "":
+            if errors['password'] is None:
                 if new_password == repeat_password:
                     query = 'UPDATE users SET password_hash=SHA2(%s, 256) WHERE login=%s'
                     with db_connector.connect().cursor(named_tuple=True) as cursor:
