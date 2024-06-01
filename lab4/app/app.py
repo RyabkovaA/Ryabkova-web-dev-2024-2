@@ -209,7 +209,7 @@ def check_password(password):
         if not (c.isalpha() or c.isdigit() or c in valid_chars): 
             return "Пароль содержит недопустимые символы"
 
-    return ""
+    return None
 
 @app.route('/users/new',  methods=["GET", "POST"])
 def create_user():
@@ -219,8 +219,10 @@ def create_user():
 
     if request.method == "POST":
         user = get_form_data(CREATE_USER_FIELDS)
+        print(user)
         errors = check_user_data(user)
-        if not errors:
+        print(errors)
+        if all(value is None for value in errors.values()):
             query = ("INSERT INTO users "
                     "(login, password_hash, last_name, first_name, middle_name, role_id) "
                     "VALUES (%(login)s, SHA2(%(password)s, 256), "
@@ -228,8 +230,9 @@ def create_user():
             try:
                 with db_connector.connect().cursor(named_tuple=True) as cursor:
                     cursor.execute(query, user)
-                    db_connector.connect().commit()        
-                return redirect(url_for('users'))
+                    db_connector.connect().commit()
+                    flash('Пользователь успешно добавлен!', category="success")    
+                    return redirect(url_for('users'))
             except DatabaseError as error:
                 flash(f'Ошибка создания пользователя! {error}', category="danger")    
                 db_connector.connect().rollback()

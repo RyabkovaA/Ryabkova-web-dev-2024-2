@@ -6,7 +6,7 @@ function fillModal(event) {
     modalForm.action = deleteUrl;
     let userName = event.relatedTarget.dataset.userName; 
     let modalBody = event.target.querySelector("#modal-body-text");
-    modalBody.textContent = 'Вы уверены, что хотите удалить пользователя ' + userName + '?'
+    modalBody.textContent = 'Вы уверены, что хотите удалить пользователя' + userName + '?'
 }
 
 window.onload = function() {
