@@ -1,0 +1,32 @@
+{% extends 'logs_base.html' %}
+
+{% block tab_content %}
+    <h2>Журнал действий пользователей</h2>
+    <table class="table">
+        <thead>
+            <th>№</th>
+            <th>Пользователь</th>
+            <th>Страница</th>
+            <th>Время</th>
+        </thead>
+        <tbody>
+            {% for log in logs%}
+            <tr>
+                <td>{{ log.id }}</td>
+                <td>{{ log.login or "Неавторизированные пользователи" }}</td>
+                <td>{{ log.path }}</td>
+                <td>{{ log.created_at }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+            {% for page in range(start_page, end_page + 1) %}
+                <li class="page-item"><a class="page-link {% if page == page_number %} active {% endif %}" href="{{ url_for('logs.index', page_number = page )}}">{{ page }}</a></li>
+            {% endfor %}
+            <li class="page-item"><a class="page-link" href="#">Next</a></li>
+        </ul>
+      </nav>
+{% endblock %}
