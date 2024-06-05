@@ -22,11 +22,11 @@
     </table>
     <nav aria-label="Page navigation example">
         <ul class="pagination">
-            <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+            <li class="page-item {% if page_number == 1 %} disabled {% endif %}"><a class="page-link" href="{{ url_for('logs.index', page_number = page_number - 1 )}}">Previous</a></li>
             {% for page in range(start_page, end_page + 1) %}
                 <li class="page-item"><a class="page-link {% if page == page_number %} active {% endif %}" href="{{ url_for('logs.index', page_number = page )}}">{{ page }}</a></li>
             {% endfor %}
-            <li class="page-item"><a class="page-link" href="#">Next</a></li>
+            <li class="page-item {% if page_number == end_page %} disabled {% endif %}"><a class="page-link" href="{{ url_for('logs.index', page_number = page_number + 1 )}}">Next</a></li>
         </ul>
       </nav>
 {% endblock %}

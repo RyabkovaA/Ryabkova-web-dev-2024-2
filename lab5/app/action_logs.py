@@ -4,6 +4,7 @@ from mysql.connector.errors import DatabaseError
 import math
 import io
 from flask_login import current_user, login_required
+from authorization import can_user
 
 
 logs_bp = Blueprint('logs', __name__, url_prefix='/logs')
@@ -56,6 +57,7 @@ def index():
 
 @logs_bp.route('/users_stat')
 @login_required
+@can_user('check_journal')
 def users_stat():
     logs = []
     try:
@@ -77,6 +79,7 @@ def users_stat():
 
 @logs_bp.route('/pages_stat')
 @login_required
+@can_user('check_journal')
 def pages_stat():
     logs = []
     try:

@@ -17,6 +17,10 @@ class UsersPolicy:
         return True 
     
     def assign_roles(self):
-        return current_user.is_admin()      
+        return current_user.is_admin()    
+
+    def check_journal(self): 
+        return current_user.is_admin()    
+
 
 
