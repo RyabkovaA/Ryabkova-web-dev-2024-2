@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container my-3">
+        <h2>Добавление рецензии на курс {{ course.name }}</h2>
+        <form method="post">
+            <div class="my-3">        
+                <label class="form-label" for="rating">Оценка</label>
+                <select class="form-select" name="rating" id="rating">
+                    <option value="5" selected >{{ score_names[5] }}</option>
+                    {% for rating_ind in range(4,-1, -1) %}
+                    <option value="{{ rating_ind }}">{{ score_names[rating_ind] }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="text">Текст рецензии</label>
+                <textarea class="form-control" id="text" name="text" rows="3"></textarea>
+            </div>
+            <button class="btn btn-primary">Сохранить</button>
+        </form>
+    </div>
+    
+{% endblock%}

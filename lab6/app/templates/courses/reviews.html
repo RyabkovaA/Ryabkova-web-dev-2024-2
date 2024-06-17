@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-3 text-center text-uppercase font-weight-bold">Рецензии на курс "{{ course.name }}"</h2>
+    
+    <!-- <div class="mb-3 text-center">
+        <a class="btn btn-outline-primary" href="{{ url_for('courses.reviews', course_id=course.id, sort='newest') }}">Сначала новые</a>
+        <a class="btn btn-outline-primary" href="{{ url_for('courses.reviews', course_id=course.id, sort='positive') }}">Сначала положительные</a>
+        <a class="btn btn-outline-primary" href="{{ url_for('courses.reviews', course_id=course.id, sort='negative') }}">Сначала отрицательные</a>
+    </div> -->
+    <form action="{{ url_for('courses.reviews', course_id=course.id) }}" class="mb-4 row align-items-center">
+        <label for="sort">Сортировка:</label>
+        <div class="col-sm-12 mb-3 col-md-4 mb-md-0 mt-2">
+            <select class="form-select" id="sort" name="sort" title="Сортировка">
+                <option value="newest" {% if sort_order == 'newest' %}selected{% endif %}>По новизне</option>
+                <option value="positive" {% if sort_order == 'positive' %}selected{% endif %}>Сначала положительные</option>
+                <option value="negative" {% if sort_order == 'negative' %}selected{% endif %}>Сначала отрицательные</option>
+            </select>
+        </div>
+        
+        <div class="col-sm-12 col-md-2 align-self-end">
+            <button type="submit" class="btn btn-outline-dark">Применить</button>
+        </div>
+    </form>
+
+    {% for review in reviews %}
+        <div class="container-fluid my-5">
+            <div class="d-flex">
+                <div class="flex-shrink-0">
+                    <img src="{{ url_for('static', filename='images/icon2.png') }}" class="rounded-circle" alt="Sample Image">
+                </div>
+                <div class="flex-grow-1 ms-3">
+                    <h6>{{ review.user.full_name }}</h6>
+                    <h5>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-star-fill" viewBox="0 0 20 20">
+                            <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
+                        </svg>
+                        {{ score_names[review.rating] }}
+                    </h5>
+                    <p class="text-justify">{{ review.text }}</p>
+                    <p><small>Дата публикации: {{ review.created_at.strftime('%d.%m.%Y') }}</small></p>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+
+    <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+            {% for p in range(1, (pagination.total // pagination.per_page) + 2) %}
+            <li class="page-item {% if p == pagination.page %}active{% endif %}">
+                <a class="page-link" href="{{ url_for('courses.reviews', course_id=course.id, sort=sort_order, page=p) }}">{{ p }}</a>
+            </li>
+            {% endfor %}
+        </ul>
+    </nav>
+</div>
+{% endblock %}
